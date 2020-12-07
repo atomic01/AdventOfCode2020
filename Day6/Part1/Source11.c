@@ -28,11 +28,11 @@ int main()
 		else
 		{
 			if(buffer!='\n')
-				{
-					votingData[i] = buffer;
-					endLineCounter = 0;
-					i++;
-				}
+			{
+				votingData[i] = buffer;
+				endLineCounter = 0;
+				i++;
+			}
 			else
 			{
 				if( endLineCounter == 0)

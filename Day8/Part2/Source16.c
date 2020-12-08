@@ -8,6 +8,7 @@
 
 int testProgram(char *);
 int fixProgram(char *);
+void swapCommands(char *);
 
 int main()
 {
@@ -56,35 +57,31 @@ int fixProgram(char *program)
 
 	for(int i = 0; i < sizeOfsample; i++)
 	{
-		if( strstr( (program + i*10), "nop") != NULL)
+		if( strstr( (program + i*10), "acc") == NULL )
 		{
-			*((program +i*10) + 0) = 'j';
-			*((program +i*10) + 1) = 'm';
+			swapCommands((program +i*10));
 			result = testProgram(program);
 			if( result!=0)
 				return result;
 			else
-			{
-				*((program +i*10) + 0) = 'n';
-				*((program +i*10) + 1) = 'o';
-			}
-		}
-		else if( strstr( (program + i*10), "jmp") != NULL)
-		{
-			*((program +i*10) + 0) = 'n';
-			*((program +i*10) + 1) = 'o';
-			result = testProgram(program);
-			if( result!=0)
-				return result;
-			else
-			{
-				*((program +i*10) + 0) = 'j';
-				*((program +i*10) + 1) = 'm';
-			}
+				swapCommands((program +i*10));
 		}
 	}
 
 	return result;
+}
+
+void swapCommands(char *program)
+{
+	if( *((program) + 0) == 'n' )
+		*((program) + 0) = 'j';
+	else if( *((program) + 0) == 'j' )
+		*((program) + 0) = 'n';
+
+	if( *((program) + 1) == 'o' )
+		*((program) + 1) = 'm';
+	else if( *((program) + 1) == 'm' )
+		*((program) + 1) = 'o';
 }
 
 int testProgram(char *program)
@@ -127,5 +124,3 @@ int testProgram(char *program)
 	else
 		return 0;
 }
-
-

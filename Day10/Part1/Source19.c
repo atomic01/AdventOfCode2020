@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #define _CRT_SECURE_NO_WARNINGS
 
-#define sizeOfsample 94
+#define sizeOfsample 95
 
 int testAdapters(int *);
-int findNextAdapter(int *, int );
+void sortArray(int * );
 
 int main()
 {
@@ -21,7 +21,7 @@ int main()
 		i++;
 	}
 
-	i = 0;
+	i = 1;
 	while (!done)
 	{
 		fscanf(fp, "%d%c", &number, &buffer);
@@ -32,32 +32,40 @@ int main()
 
 	}
 
+	sortArray(&adapterList[0]);
 	result = testAdapters(&adapterList[0]);
 	printf("%d\n", result);
 
 	return 0;
 }
 
-int testAdapters(int *adapterList)
+void sortArray(int *array )
 {
-	int adapter = 0, prevAdapter = 0, result = 0;
-	int memory[3] = {0,0,1};
+	int temp = 0;
 
 	for(int i = 0; i < sizeOfsample; i++)
 	{
-		prevAdapter = adapter;
-		adapter = findNextAdapter(&adapterList[0], adapter);
-		result = adapter - prevAdapter;
-		memory[result - 1]++;
+		for(int j = i+1; j < sizeOfsample; j++)
+		{
+			if(array[j] < array[i])
+			{
+				temp = array[i];
+				array[i] = array[j];
+				array[j] = temp;
+			}
+		}
 	}
+}
+
+
+int testAdapters(int *adapterList)
+{
+	int result = 0;
+	int memory[3] = {0,0,1};
+
+	for(int i = 0; i < sizeOfsample - 1; i++)
+		memory[adapterList[i+1] - adapterList[i] - 1]++;
 
 	return memory[0] * memory[2];
 }
 
-int findNextAdapter(int *adapterList, int adapter)
-{
-	for(int i = 1; i < 4; i++)
-		for(int j = 0; j < sizeOfsample; j++)
-			if( adapterList[j] == (adapter + i))
-				return adapter + i;
-}
